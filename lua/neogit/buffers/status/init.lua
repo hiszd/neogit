@@ -23,6 +23,7 @@ local util = require("neogit.lib.util")
 
 local api = vim.api
 local fn = vim.fn
+local uv = vim.uv or vim.loop
 
 ---@class Semaphore
 ---@field permits number
@@ -47,7 +48,7 @@ end
 ---@param dir? string
 ---@return StatusBuffer
 function M.instance(dir)
-  return instances[dir or vim.uv.cwd()]
+  return instances[dir or uv.cwd()]
 end
 
 ---@param state NeogitRepo
