@@ -9,6 +9,7 @@ local Ui = require("neogit.lib.ui")
 local Path = require("plenary.path")
 
 ---@class Buffer
+---@field fold boolean
 ---@field handle number
 ---@field win_handle number
 ---@field namespaces table
@@ -590,6 +591,7 @@ end
 ---@field on_detach function|nil
 ---@field render function|nil
 ---@field foldmarkers boolean|nil
+---@field fold boolean|nil
 
 ---@param config BufferConfig
 ---@return Buffer
@@ -600,6 +602,7 @@ function Buffer.create(config)
 
   buffer.kind = config.kind or "split"
   buffer.disable_line_numbers = (config.disable_line_numbers == nil) and true or config.disable_line_numbers
+  buffer.fold = config.fold or true
 
   if config.load then
     logger.debug("[BUFFER:" .. buffer.handle .. "] Loading content from file: " .. config.name)
@@ -663,9 +666,13 @@ function Buffer.create(config)
 
   if win then
     logger.debug("[BUFFER:" .. buffer.handle .. "] Setting window options")
+    local foldlevel = 99
+    if not config.fold then
+      foldlevel = 9999
+    end
 
-    buffer:set_window_option("foldenable", true)
-    buffer:set_window_option("foldlevel", 99)
+    buffer:set_window_option("foldenable", config.fold)
+    buffer:set_window_option("foldlevel", foldlevel)
     buffer:set_window_option("foldminlines", 0)
     buffer:set_window_option("foldtext", "")
     buffer:set_window_option("listchars", "")

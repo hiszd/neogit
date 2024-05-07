@@ -88,6 +88,7 @@ function M:open(kind, cwd)
     kind = kind or config.values.kind,
     disable_line_numbers = config.values.disable_line_numbers,
     foldmarkers = not config.values.disable_signs,
+    fold = config.values.status.fold,
     on_detach = function()
       if self.watcher then
         self.watcher:stop()

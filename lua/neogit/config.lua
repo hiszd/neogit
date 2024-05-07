@@ -221,6 +221,7 @@ end
 ---@field HEAD_padding? integer The amount of padding to add to the right of the HEAD label
 ---@field mode_text? { [string]: string } The text to display for each mode
 ---@field show_head_commit_hash? boolean Show the commit hash for HEADs in the status buffer
+---@field fold boolean Whether or not to fold items by default
 
 ---@class NeogitConfigMappings Consult the config file or documentation for values
 ---@field finder? { [string]: NeogitConfigMappingsFinder } A dictionary that uses finder commands to set multiple keybinds
@@ -308,6 +309,7 @@ function M.get_default_values()
     auto_show_console = true,
     notification_icon = "󰊢",
     status = {
+      fold = true,
       show_head_commit_hash = true,
       recent_commit_count = 10,
       HEAD_padding = 10,
@@ -995,6 +997,7 @@ function M.validate_config()
       validate_type(config.status.mode_padding, "status.mode_padding", "number")
       validate_type(config.status.HEAD_padding, "status.HEAD_padding", "number")
       validate_type(config.status.mode_text, "status.mode_text", "table")
+      validate_type(config.status.fold, "status.fold", "boolean")
     end
     validate_signs()
     validate_trinary_auto(config.disable_insert_on_commit, "disable_insert_on_commit")
